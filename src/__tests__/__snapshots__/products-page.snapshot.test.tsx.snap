@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Tela de produtos (snapshot) renderiza a lista inicial 1`] = `
+[
+  "Webcam Full HD",
+  "Monitor 27\" 4K",
+  "Livro: Clean Code",
+  "Luminária de Mesa",
+  "Mochila Impermeável",
+  "Garrafa Térmica 750ml",
+]
+`;

@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gerenciador de Produtos (Next.js)
 
-## Getting Started
+Aplicação web para gerenciamento de produtos, com foco em:
 
-First, run the development server:
+- Next.js (App Router) + TypeScript
+- Estado global
+- Consumo de API fictícia (mock)
+- UI com Tailwind CSS
+- 1 teste de snapshot
+
+## Funcionalidades
+
+- Listagem de produtos exibindo: **nome**, **categoria**, **preço**, **descrição**, **imagem (URL)**
+- Cadastro de novo produto (campos: **nome, preço, descrição, URL da imagem**)
+- Filtros: **nome** e **faixa de preço** (mínimo/máximo)
+- **Ordenação** (nome, preço, categoria)
+- **Paginação** (extra)
+- Layout responsivo (extra)
+
+## Stack e escolhas
+
+- **Estado global:** Zustand (simples, direto e sem boilerplate)
+	- Store em [src/store/productsStore.ts](src/store/productsStore.ts)
+- **Mock de API:** MSW (Mock Service Worker) no browser (intercepta chamadas `fetch`)
+	- Handlers em [src/mocks/handlers.ts](src/mocks/handlers.ts)
+	- Worker gerado em `public/mockServiceWorker.js`
+- **Fallback de API (opcional, mas ajuda):** rota Next em [app/api/products/route.ts](app/api/products/route.ts)
+	- Assim a aplicação continua funcionando mesmo se o MSW estiver desabilitado.
+- **UI:** Tailwind CSS + componentes pequenos reutilizáveis
+
+## Como rodar
+
+Requisitos: Node.js + npm.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abrir: http://localhost:4000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Testes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm test
+```
 
-## Learn More
+## Produção (local)
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+npm run start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Abrir: http://localhost:4000
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Snapshot test em [src/__tests__/products-page.snapshot.test.tsx](src/__tests__/products-page.snapshot.test.tsx)
 
-## Deploy on Vercel
+- Snapshot test em [src/__tests__/products-page.snapshot.test.tsx](src/__tests__/products-page.snapshot.test.tsx)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Endpoints (mock)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+O front consome:
+
+- `GET /api/products` → `{ items: Product[] }`
+- `POST /api/products` → `{ item: Product }`
+
+No desenvolvimento, o MSW é iniciado automaticamente via [src/mocks/MswProvider.tsx](src/mocks/MswProvider.tsx).
+
+Se quiser forçar o mock, você pode usar:
+
+- `NEXT_PUBLIC_API_MOCKING=enabled`
+
